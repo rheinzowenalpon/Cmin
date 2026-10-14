@@ -87,7 +87,8 @@ void analyzer() {
         addChar();
         if ((nextToken = opNoPrefix()) == UNKNOWN) {
             getChar();
-            addChar();
+            if (nextChar != 32)
+                addChar();
             nextToken = opWPrefix();
         }
         getChar();
@@ -103,5 +104,3 @@ void analyzer() {
     for (size_t i = 0; i < lexLen; i++)
         lexeme[i] = '\0';
 }
-
-

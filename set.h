@@ -68,6 +68,7 @@
 #define S_COMME  67
 #define O_COMME  68
 #define C_COMME  69
+#define INTER    70
 
 #define UNKNOWN  99
 
