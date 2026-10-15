@@ -1,6 +1,8 @@
 #include <stdio.h>
 
-#define MAX_LEXEME 1024
+#define MAX_LEXEME   1024
+#define MAX_FILELEN 32767
+#define MAX_PATH    32767
 
 #define LETTER    0
 #define DIGIT     1
@@ -17,16 +19,16 @@
 #define BREAK    16
 #define TRY      17
 #define BUT      18
-#define CONST    19
+#define CONST_   19
 #define GLOBAL   20
-#define INT      21
+#define INT_     21
 #define DEC      22
 #define STRING   23
 #define NUL      24
 #define STRUCT   25
 #define BOOL     26
-#define TRUE     27
-#define FALSE    28
+#define TRUE_    27
+#define FALSE_   28
 #define RETURN   29
 #define INCLUDE  30
 #define MAIN     31
@@ -69,16 +71,22 @@
 #define O_COMME  68
 #define C_COMME  69
 #define INTER    70
+#define ESCCHAR  71
 
 #define UNKNOWN  99
 
 void getChar();
 void addChar();
 void getNonBlank();
-void analyzer();
+int analyzer();
 
+char fileName[MAX_FILELEN];
 char lexeme[MAX_LEXEME];
 char nextChar;
+short int* tokenArray;
 short int nextToken, charClass;
 unsigned short int lexLen;
+char workPath[MAX_PATH] = "..\\..\\";
+
 FILE *fptr;
+FILE *lexemeFile;

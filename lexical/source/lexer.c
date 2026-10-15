@@ -1,14 +1,25 @@
-#include "token.c"
+#ifndef _TOKEN
+#define _TOKEN
+#include "../source/token.c"
+#endif
+#ifndef _SOURCE
+#define _SOURCE
+#include "../source/scan.c"
+#endif
 
 void main() {
-    if ((fptr = fopen("program.cmin", "r")) == NULL) {
+    fileSearch();
+    if ((fptr = fopen(fileName, "r")) == NULL)
         printf("ERROR - file not found\n");
-    } else {
+    else {
+        lexemeFile = fopen("../bin/token.lxmf", "w");
         getChar();
         do {
-            analyzer();
+            fprintf(lexemeFile, "%d ", analyzer());
         } while(nextToken != EOF);
     }
+    fclose(lexemeFile);
+    fclose(fptr);
 }
 
 void getChar() {
@@ -21,6 +32,8 @@ void getChar() {
             charClass = NEWLINE;
         else if (nextChar == '#')
             charClass = HASH;
+        else if (nextChar == '\\')
+            charClass = ESCCHAR;
         else
             charClass = UNKNOWN;
     } else
@@ -40,7 +53,7 @@ void getNonBlank() {
         getChar();
 }
 
-void analyzer() {
+int analyzer() {
     lexLen = 0;
     getNonBlank();
     switch(charClass) {
@@ -51,6 +64,13 @@ void analyzer() {
         } while (charClass == LETTER || charClass == DIGIT);
         nextToken = keyword();
         break;
+        case ESCCHAR:
+            addChar();
+            getChar();
+            if (nextChar != 'n' || nextChar != 't' || nextChar != '\\')
+                nextToken = UNKNOWN;
+            else addChar();
+            break;
         case DIGIT:
         bool dotCounter = 0;
         do {
@@ -103,4 +123,5 @@ void analyzer() {
     printf("Next token is : %d, next lexeme is %s\n", nextToken, lexeme);
     for (size_t i = 0; i < lexLen; i++)
         lexeme[i] = '\0';
+    return nextToken;
 }

@@ -1,5 +1,9 @@
+#ifndef _SET
+#define _SET
+#include "../header/set.h"
+#endif
+
 #include <ctype.h>
-#include "set.h"
 
 int keyword() {
     switch(lexeme[0]) {
@@ -33,7 +37,7 @@ int keyword() {
             else if (lexeme[3] == 's' &&
                      lexeme[4] == 't' &&
                      !lexeme[5])
-                return CONST;
+                return CONST_;
         } return IDENT;
         case 'd':
         if (lexeme[1] == 'e' &&
@@ -54,7 +58,7 @@ int keyword() {
             lexeme[3] == 's' &&
             lexeme[4] == 'e' &&
             !lexeme[5])
-            return FALSE;
+            return FALSE_;
         return IDENT;
         case 'g':
         if (lexeme[1] == 'l' &&
@@ -72,7 +76,7 @@ int keyword() {
         else if (lexeme[1] == 'n' &&
                  lexeme[2] == 't' &&
                  !lexeme[3])
-            return INT;
+            return INT_;
         return IDENT;
         case 'm':
         if (lexeme[1] == 'a' &&
@@ -116,7 +120,7 @@ int keyword() {
             if (lexeme[2] == 'u' &&
                 lexeme[3] == 'e' &&
                 !lexeme[4])
-                return TRUE;
+                return TRUE_;
             else if (lexeme[2] == 'y' &&
                      !isalpha(lexeme[3]))
                 return TRY;
