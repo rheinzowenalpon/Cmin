@@ -25,7 +25,12 @@ int keyword() {
             return BOOL;
         return IDENT;
         case 'c':
-        if (lexeme[1] == 'o' &&
+        if (lexeme[1] == 'h' &&
+            lexeme[2] == 'a' &&
+            lexeme[3] == 'r' &&
+            !lexeme[4])
+            return CHARLIT;
+        else if (lexeme[1] == 'o' &&
             lexeme[2] == 'n') {
             if (lexeme[3] == 't' &&
                 lexeme[4] == 'i' &&

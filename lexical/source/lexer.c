@@ -13,9 +13,10 @@ void main() {
         printf("ERROR - file not found\n");
     else {
         lexemeFile = fopen("../bin/token.lxmf", "w");
+        fprintf(lexemeFile, "%-15s%-15s\n\n", "Token Type", "Lexeme");
         getChar();
         do {
-            fprintf(lexemeFile, "%d ", analyzer());
+            analyzer();
         } while(nextToken != EOF);
     }
     fclose(lexemeFile);
@@ -72,7 +73,7 @@ int analyzer() {
             else addChar();
             break;
         case DIGIT:
-        bool dotCounter = 0;
+        int dotCounter = 0;
         do {
             addChar();
             getChar();
@@ -121,7 +122,10 @@ int analyzer() {
         break;
     }
     printf("Next token is : %d, next lexeme is %s\n", nextToken, lexeme);
-    for (size_t i = 0; i < lexLen; i++)
+    fprintf(lexemeFile, "%-15s%-15s", symTab(nextToken), lexeme);
+    for (size_t i = 0; i < lexLen; i++){
         lexeme[i] = '\0';
+    }
+    fprintf(lexemeFile, "\n");
     return nextToken;
 }
