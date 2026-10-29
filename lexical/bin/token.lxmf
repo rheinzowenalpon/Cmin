@@ -1,1 +1,36 @@
-30 10 2 10 4 4 21 31 58 59 62 4 21 10 45 11 4 21 10 45 11 4 21 10 46 10 4 21 10 45 11 4 63 -1 
+Token Type     Lexeme         
+
+INCLUDE        #include       
+IDENT          stdio          
+DOT            .              
+IDENT          h              
+NEWLINE        \n             
+NEWLINE        \n             
+INT            int            
+MAIN           main           
+O_PAREN        (              
+C_PAREN        )              
+O_SQRL         {              
+NEWLINE        \n             
+INT            int            
+IDENT          a              
+EQL            =              
+CONSTANT       5.5            
+NEWLINE        \n             
+INT            int            
+IDENT          b              
+EQL            =              
+CONSTANT       6              
+NEWLINE        \n             
+INT            int            
+IDENT          sum            
+PLSEQL         +=             
+IDENT          a              
+NEWLINE        \n             
+INT            int            
+IDENT          value          
+EQL            =              
+CONSTANT       3              
+NEWLINE        \n             
+C_SQRL         }              
+               EOF            
