@@ -12,11 +12,10 @@ File system has been fixed. Categorized each files as source code, headers, or i
 The compiled .exe should be in the bin but I couldn't figure out how to automatically compile a file into /lexeme/bin so for the meantime, if you wish to compile cleanly, I recommend doing:
 
 If you're in the root:
-cd PREVIOUS_DIRECTORIES/Cmin/lexical/source && gcc lexeme.c -o "../bin/lexeme.exe" && cd.. && cd bin && .\lexeme.exe
+cd PREVIOUS_DIRECTORIES/Cmin/lexical/source && gcc lexer.c -o "../bin/lexeme.exe" && cd.. && cd bin && lexeme.exe
 
 If you're inside Cmin:
-cd lexical/source && gcc lexer.c -o "../bin/lexeme.exe" && cd.. && cd bin && .\lexeme.exe
-(Make sure to update the powershell to version 7.6.9)
+cd lexical/source ; gcc lexer.c -o "../bin/lexeme.exe" ; cd.. ; cd bin ; .\lexeme.exe
 
 (If you just compile it on vscode, the file will spawn in lexical/source directory not in the bin.)
 

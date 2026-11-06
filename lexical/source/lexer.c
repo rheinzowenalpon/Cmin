@@ -12,11 +12,19 @@ void main() {
     if ((fptr = fopen(fileName, "r")) == NULL)
         printf("ERROR - file not found\n");
     else {
-        lexemeFile = fopen("../bin/token.lxmf", "w");
+        if (!debugVal) {
+            printf("ERROR - unknown file extension found\n");
+            fptr = fopen("../bin/err.txt", "w");
+            fprintf(fptr, "ERROR - unknown file extension found\n");
+            return;
+        }
+        remove("../bin/err.txt");
+        lexemeFile = fopen("../bin/symbol_table.txt", "w");
+        fprintf(lexemeFile, "%-15s%-15s\n\n", "Token Type", "Lexeme");
         getChar();
         do {
-            fprintf(lexemeFile, "%d ", analyzer());
-        } while(nextToken != EOF);
+            analyzer();
+        } while(nextToken != EOF_);
     }
     fclose(lexemeFile);
     fclose(fptr);
@@ -24,11 +32,11 @@ void main() {
 
 void getChar() {
     if ((nextChar = getc(fptr)) != EOF) {
-        if (isalpha(nextChar)) 
+        if (isalpha(nextChar))
             charClass = LETTER;
         else if (isdigit(nextChar))
             charClass = DIGIT;
-        else if (nextChar == '\n')
+        else if (nextChar == 10)
             charClass = NEWLINE;
         else if (nextChar == '#')
             charClass = HASH;
@@ -49,8 +57,9 @@ void addChar() {
 }
 
 void getNonBlank() {
-    while(nextChar == ' ')
+    while(nextChar < 33 && nextChar != 10 && nextChar != EOF) {
         getChar();
+    }
 }
 
 int analyzer() {
@@ -61,16 +70,12 @@ int analyzer() {
         do {
             addChar();
             getChar();
-        } while (charClass == LETTER || charClass == DIGIT);
+        } while (charClass == LETTER || charClass == DIGIT || nextChar == '_');
         nextToken = keyword();
         break;
-        case ESCCHAR:
+        case ESCCHAR: //last issue
             addChar();
             getChar();
-            if (nextChar != 'n' || nextChar != 't' || nextChar != '\\')
-                nextToken = UNKNOWN;
-            else addChar();
-            break;
         case DIGIT:
         bool dotCounter = 0;
         do {
@@ -81,7 +86,14 @@ int analyzer() {
             else if (nextChar == '.' && dotCounter)
                 break;
         } while (charClass == DIGIT || nextChar == '.');
-        nextToken = CONSTANT;
+        if (isspace(nextChar)) {
+            nextToken = CONSTANT;
+            break;
+        } do {
+            addChar();
+            getChar();
+        } while (!isspace(nextChar));
+        nextToken = UNKNOWN;
         break;
         case NEWLINE:
         addChar();
@@ -104,24 +116,36 @@ int analyzer() {
             nextToken = UNKNOWN;
         } break;
         case UNKNOWN:
-        addChar();
-        if ((nextToken = opNoPrefix()) == UNKNOWN) {
+        addChar(); //@alponrheinzowend 
+        if ((nextToken = opNoPrefix()) != UNKNOWN) {
             getChar();
-            if (nextChar != 32)
+            if (isspace(nextChar) || isalnum(nextChar)) break;
+            addChar();
+            if ((nextToken = opWPrefix()) != UNKNOWN) {
+                getChar();
+                break;
+            }
+        } else if (nextToken == UNKNOWN) {
+            do {
+                getChar();
+                if (nextChar == EOF) break;
                 addChar();
-            nextToken = opWPrefix();
+            } while (nextChar > 32);
         }
         getChar();
         break;
-        case EOF:
-        nextToken = EOF;
+        case EOF_:
+        nextToken = EOF_;
         lexeme[0] = 'E';
         lexeme[1] = 'O';
         lexeme[2] = 'F';
         break;
     }
     printf("Next token is : %d, next lexeme is %s\n", nextToken, lexeme);
-    for (size_t i = 0; i < lexLen; i++)
+    fprintf(lexemeFile, "%-15s%-15s", symTab(nextToken), lexeme);
+    for (size_t i = 0; i < lexLen; i++){
         lexeme[i] = '\0';
+    }
+    fprintf(lexemeFile, "\n");
     return nextToken;
 }

@@ -25,7 +25,12 @@ int keyword() {
             return BOOL;
         return IDENT;
         case 'c':
-        if (lexeme[1] == 'o' &&
+        if (lexeme[1] == 'h' &&
+            lexeme[2] == 'a' &&
+            lexeme[3] == 'r' &&
+            !lexeme[4])
+            return CHARLIT;
+        else if (lexeme[1] == 'o' &&
             lexeme[2] == 'n') {
             if (lexeme[3] == 't' &&
                 lexeme[4] == 'i' &&
@@ -164,6 +169,30 @@ int opNoPrefix() {
         return DOT;
         case '$':
         return INTER;
+        case '^':
+        return BITXOR;
+        case '~':
+        return BITNOT;
+        case '+':
+        return ADD_OP;
+        case '-':
+        return SUB_OP;
+        case '*':
+        return MULT_OP;
+        case '/':
+        return DIV_OP;
+        case '&':
+        return BITAND;
+        case '|':
+        return BITOR;
+        case '!':
+        return BITNOT;
+        case '<':
+        return LESS;
+        case '>':
+        return GREAT;
+        case '=':
+        return EQL;
         default:
         return UNKNOWN;
     }
@@ -172,105 +201,114 @@ int opNoPrefix() {
 int opWPrefix() {
     switch(lexeme[0]) {
         case '+':
-        if (!lexeme[1])
-            return ADD_OP;
         switch(lexeme[1]) {
             case '+':
             return INCREM;
             case '=':
             return PLSEQL;
             default:
-            return UNKNOWN;
+            if (lexeme[1] < 33) {
+                lexeme[1] = '\0';
+                return ADD_OP;
+            }
+            else return UNKNOWN;
         }
         case '-':
-        if (!lexeme[1])
-            return SUB_OP;
-        else
-            switch(lexeme[1]) {
-                case '-':
-                return DECREM;
-                case '=':
-                return MINEQL;
-                default:
-                return UNKNOWN;
+        switch(lexeme[1]) {
+            case '-':
+            return DECREM;
+            case '=':
+            return MINEQL;
+            default:
+            if (lexeme[1] < 33) {
+                lexeme[1] = '\0';
+                return SUB_OP;
             }
+            else return UNKNOWN;
+        }
         case '*':
-        if (!lexeme[1])
-            return MULT_OP;
-        else
-            switch(lexeme[1]) {
-                case '/':
-                return C_COMME;
-                case '=':
-                return TIMEQL;
-                default:
-                return UNKNOWN;
+        switch(lexeme[1]) {
+            case '/':
+            return C_COMME;
+            case '=':
+            return TIMEQL;
+            default:
+            if (lexeme[1] < 33) {
+                lexeme[1] = '\0';
+                return MULT_OP;
             }
+            else return UNKNOWN;
+        }
         case '/':
-        if (!lexeme[1])
-            return DIV_OP;
-        else
-            switch(lexeme[1]) {
-                case '*':
-                return O_COMME;
-                case '/':
-                return S_COMME;
-                case '=':
+        switch(lexeme[1]) {
+            case '*':
+            return O_COMME;
+            case '/':
+            return S_COMME;
+            case '=':
+            return DIVEQL;
+            default:
+            if (lexeme[1] < 33) {
+                lexeme[1] = '\0';
                 return DIV_OP;
-                default:
-                return UNKNOWN;
             }
+            else return UNKNOWN;
+        }
         case '&':
-        if (!lexeme[1])
-            return BITAND;
-        else if (lexeme[1] == '&')
+        if (lexeme[1] == '&')
             return COMAND;
-        else return UNKNOWN;
+        else if (lexeme[1] < 33) {
+            lexeme[1] = '\0';
+            return BITAND;
+        } else return UNKNOWN;
         case '|':
-        if (!lexeme[1])
-            return BITOR;
-        else if (lexeme[1] == '|')
+        if (lexeme[1] == '|')
             return COMOR;
-        else return UNKNOWN;
+        else if (lexeme[1] < 33) {
+            lexeme[1] = '\0';
+            return BITOR;
+        } else return UNKNOWN;
         case '!':
-        if (!lexeme[1])
-            return BITNOT;
-        else if (lexeme[1] == '=')
+        if (lexeme[1] == '=')
             return NOTEQL;
-        else return UNKNOWN;
-        case '^':
-        if (!lexeme[1])
-            return BITXOR;
+        else if (lexeme[1] < 33) {
+            lexeme[1] = '\0';
+            return BITNOT;
+        } else return UNKNOWN;
         case '<':
-        if (!lexeme[1])
-            return LESS;
-        else {
-            switch(lexeme[1]) {
-                case '<':
-                return BITLFT;
-                case '=':
-                return LSSEQL;
-                default:
-                return UNKNOWN;
+        switch(lexeme[1]) {
+            case '<':
+            return BITLFT;
+            case '=':
+            return LSSEQL;
+            default:
+            if (lexeme[1] < 33) {
+                lexeme[1] = '\0';
+                return LESS;
             }
+            else return UNKNOWN;
         }
         case '>':
-        if (!lexeme[1])
-            return GREAT;
-        else
-            switch(lexeme[1]) {
-                case '>':
-                return BITRGHT;
-                case '=':
-                return GRTEQL;
-                default:
-                return UNKNOWN;
+        switch(lexeme[1]) {
+            case '>':
+            return BITRGHT;
+            case '=':
+            return GRTEQL;
+            default:
+            if (lexeme[1] < 33) {
+                lexeme[1] = '\0';
+                return GREAT;
             }
+            else return UNKNOWN;
+        }
         case '=':
-        if (!lexeme[1])
-            return EQL;
-        else if (lexeme[1] == '=')
+        if (lexeme[1] == '=')
             return EQLEQL;
-        else return UNKNOWN;
+        else if (lexeme[1] < 33) {
+            lexeme[1] = '\0';
+            return EQL;
+        } else return UNKNOWN;
+        default:
+        return UNKNOWN;
     }
 }
