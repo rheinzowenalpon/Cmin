@@ -1,0 +1,13 @@
+Token Type     Lexeme         
+
+IF             if             
+O_PAREN        (              
+INTER          $              
+IDENT          manuel         
+C_PAREN        )              
+O_SQRL         {              
+NEWLINE        \n             
+IDENT          torta          
+NEWLINE        \n             
+C_SQRL         }              
+EOF_           EOF            
