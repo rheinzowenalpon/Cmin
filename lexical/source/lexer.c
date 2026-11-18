@@ -20,14 +20,17 @@ void main() {
         }
         remove("../bin/err.txt");
         lexemeFile = fopen("../bin/symbol_table.txt", "w");
+        tokenFile = fopen("../bin/tokenValues.txt", "w");
         fprintf(lexemeFile, "%-15s%-15s\n\n", "Token Type", "Lexeme");
         getChar();
         do {
             analyzer();
         } while(nextToken != EOF_);
     }
+    fclose(tokenFile);
     fclose(lexemeFile);
     fclose(fptr);
+    return;
 }
 
 void getChar() {
@@ -116,10 +119,10 @@ int analyzer() {
             nextToken = UNKNOWN;
         } break;
         case UNKNOWN:
-        addChar(); //@alponrheinzowend 
+        addChar();
         if ((nextToken = opNoPrefix()) != UNKNOWN) {
             getChar();
-            if (isspace(nextChar) || isalnum(nextChar)) break;
+            if (isspace(nextChar) || isalnum(nextChar) || EOF) break;
             addChar();
             if ((nextToken = opWPrefix()) != UNKNOWN) {
                 getChar();

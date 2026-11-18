@@ -171,3 +171,4 @@ bool debugVal = 1;
 
 FILE *fptr;
 FILE *lexemeFile;
+FILE *tokenFile;

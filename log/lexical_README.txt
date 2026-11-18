@@ -1,5 +1,3 @@
-ALPON, OCTOBER 16, 2026 ----------
-
 Points of interest:
 
 (1)
