@@ -19,16 +19,14 @@ void main() {
             return;
         }
         remove("../bin/err.txt");
-        lexemeFile = fopen("../bin/symbol_table.txt", "w");
-        tokenFile = fopen("../bin/tokenValues.txt", "w");
-        fprintf(lexemeFile, "%-15s%-15s\n\n", "Token Type", "Lexeme");
+        fptr2 = fopen("../bin/symbol_table.txt", "w");
+        fprintf(fptr2, "%-15s%-15s%-15s\n\n", "Token Type", "Lexeme", "Token Value");
         getChar();
         do {
             analyzer();
         } while(nextToken != EOF_);
     }
-    fclose(tokenFile);
-    fclose(lexemeFile);
+    fclose(fptr2);
     fclose(fptr);
     return;
 }
@@ -145,10 +143,10 @@ int analyzer() {
         break;
     }
     printf("Next token is : %d, next lexeme is %s\n", nextToken, lexeme);
-    fprintf(lexemeFile, "%-15s%-15s", symTab(nextToken), lexeme);
+    fprintf(fptr2, "%-15s%-15s%-15d", symTab(nextToken), lexeme, nextToken);
     for (size_t i = 0; i < lexLen; i++){
         lexeme[i] = '\0';
     }
-    fprintf(lexemeFile, "\n");
+    fprintf(fptr2, "\n");
     return nextToken;
 }

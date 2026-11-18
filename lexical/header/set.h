@@ -167,8 +167,8 @@ short int* tokenArray;
 short int nextToken, charClass;
 unsigned short int lexLen;
 char workPath[MAX_PATH] = "..\\..\\programs\\";
+char symtblPath[MAX_PATH] = "..\\..\\lexical\\bin\\";
 bool debugVal = 1;
 
 FILE *fptr;
-FILE *lexemeFile;
-FILE *tokenFile;
+FILE *fptr2;
