@@ -14,8 +14,9 @@ void main() {
     else {
         if (!debugVal) {
             printf("ERROR - unknown file extension found\n");
-            fptr = fopen("../bin/err.txt", "w");
-            fprintf(fptr, "ERROR - unknown file extension found\n");
+            fptrErr = fopen("../bin/err.txt", "w");
+            fprintf(fptrErr, "ERROR - unknown file extension found\n");
+            fclose(fptrErr);
             return;
         }
         remove("../bin/err.txt");

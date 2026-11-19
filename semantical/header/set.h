@@ -5,6 +5,6 @@
 
 #include "../../lexical/header/dirent.h"
 
-void getToken(bool* start);
+void getToken();
 bool isFirstToken = 1;
 int currToken;

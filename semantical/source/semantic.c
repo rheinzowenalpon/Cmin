@@ -3,22 +3,29 @@
 void main() {
     symbolTableSearch();
     if ((fptr = fopen(fileName, "r")) == NULL) {
-        printf("ERROR - symbol_table missing\n");
+        printf("ERROR - no file found\n");
         printf("%s\n", fileName);
     } else {
+        if (!debugVal) {
+            printf("ERROR - symbol_table.txt not found\n");
+            fptrErr = fopen("../bin/err.txt", "w");
+            fprintf(fptrErr, "ERROR - unknown file extension found\n");
+            fclose(fptrErr);
+            return;
+        }
         do {
-            getToken(&isFirstToken);
-            semantic(currToken);
+            getToken();
+            semantic();
         } while (currToken != -1);
         return;
     }
 }
 
-void getToken(bool* start) {
+void getToken() {
     currToken = 0;
-    if (*start) {
+    if (isFirstToken) {
         fseek(fptr, 79, SEEK_SET);
-        *start = 0;
+        isFirstToken = 0;
     } else fseek(fptr, 45, SEEK_CUR);
     char temp[2];
     if ((temp[0] = fgetc(fptr)) == '-')
