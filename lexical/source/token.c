@@ -186,7 +186,7 @@ int opNoPrefix() {
         case '|':
         return BITOR;
         case '!':
-        return BITNOT;
+        return NEGATE;
         case '<':
         return LESS;
         case '>':
