@@ -101,6 +101,15 @@ void value() {
 
 }
 
+void return_(){
+    getToken();
+    if (currToken == 29){
+        expression();
+    } else {
+        printf("ERROR"); // panic recovery temporarily a print statment
+    }
+}
+
 //Alpon.number
 
 //Not Allowed:
