@@ -25,17 +25,17 @@
 #define GLOBAL   20
 #define INT_     21
 #define DEC      22
-#define STRING   23
+#define STRING   23 //For the keyword
 #define NUL      24
 #define STRUCT   25
-#define BOOL     26
-#define TRUE_    27
-#define FALSE_   28
+#define BOOL     26 //For the keyword
+#define TRUE_    27 //
+#define FALSE_   28 //
 #define RETURN   29
 #define INCLUDE  30
 #define MAIN     31
-#define ADD_OP   32
-#define SUB_OP   33
+#define ADD_OP   32 //Operator
+#define SUB_OP   33 //Operator
 #define MULT_OP  34
 #define DIV_OP   35
 #define MODULO   36
@@ -74,7 +74,8 @@
 #define C_COMME  69
 #define INTER    70
 #define ESCCHAR  71
-#define CHARLIT  72
+#define CHARLIT  72 //For literal characters
+#define NEGATE   73
 
 #define UNKNOWN  99
 #define EOF_     -1

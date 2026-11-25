@@ -15,7 +15,7 @@ void main() {
         }
         do {
             getToken();
-            semantic();
+            printf("%d\n", currToken);
         } while (currToken != -1);
         return;
     }
@@ -77,7 +77,6 @@ int parseSpecial() {
     }
 }
 
-
 void semantic() {
     if (currToken == ESCCHAR || currToken == NEWLINE || currToken == TAB ||
         currToken == S_QUOTE || currToken == D_QUOTE) {
@@ -86,3 +85,83 @@ void semantic() {
         getToken();
     }
 }
+
+/*
+    Value = exp|constant|bool|string|char|ident|null|arr
+            N/A|19      |26  |N/A   |72  |10   |24  |N/A
+    ""
+*/
+void string() {
+    getToken();
+    if (currToken == 10) {
+        string();
+    } else if (currToken == 66) {
+        printf("SUCCESS");
+    } else {
+        printf("ERROR");
+    }
+}
+
+// {-1, +2, -3}
+
+void postfix() {
+    if (currToken == 32 || currToken == 33) {
+        value();
+    } else {
+        factor();
+        call();
+    }
+}
+
+void array() {
+    getToken();
+    if (currToken == 62) {
+        array();
+    } else if (currToken == 32 || currToken == 33 || currToken == 39 || currToken == 73) { //comma
+        postfix();
+    } else if (currToken == 63) {
+        printf("SUCCESS");
+    } else {
+        printf("ERROR");
+    }
+}
+
+void value() {
+
+    if (currToken == 19) {
+        printf("SUCESS");
+    } else if (currToken == 26) {
+        printf("SUCESS");
+    } else if (currToken == 72) {
+        printf("SUCESS");
+    } else if (currToken == 10) {
+        printf("SUCESS");
+    } else if (currToken == 24) {
+        printf("SUCESS");         
+    } else if (currToken == 66) {
+        string();
+    } else if (currToken == 62) {
+        array();
+    } else {
+        expression();
+    }
+
+}
+
+void return_(){
+    getToken();
+    if (currToken == 29){
+        expression();
+    } else {
+        printf("ERROR"); // panic recovery temporarily a print statment
+    }
+}
+
+//Alpon.number
+
+//Not Allowed:
+//CONST GLOBAL
+//Allowed:
+//GLOBAL
+//CONST
+//GLOBAL CONST
