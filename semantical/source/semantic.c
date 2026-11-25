@@ -98,7 +98,19 @@ void expression() {
 }
 
 void data_type();
-void modifier();
+void modifier() {
+    if (currToken == 20) {
+    printf("Success");
+    getToken();
+        if (currToken == 19) {
+        printf("Success");
+        }
+    } else if (currToken == 19) {
+    printf("Success");
+    } else {
+        printf("ERROR");
+    }
+}
 */
 
 //FUNCTION
@@ -135,16 +147,16 @@ void value() {
     if (currToken == 11) {
         getToken();
         if (currToken == 4 || currToken == -1) {
-            printf("SUCESS");
+            printf("SUCCESS");
         } else printf("ERROR");
     } else if (currToken == 26) {
-        printf("SUCESS");
+        printf("SUCCESS");
     } else if (currToken == 72) {
-        printf("SUCESS");
+        printf("SUCCESS");
     } else if (currToken == 10) {
-        printf("SUCESS");
+        printf("SUCCESS");
     } else if (currToken == 24) {
-        printf("SUCESS");         
+        printf("SUCCESS");         
     } else if (currToken == 66) {
         //string();
     } else if (currToken == 62) {
@@ -308,4 +320,27 @@ void include() {
             } else printf("ERROR");
         } else printf("ERROR");
     } else printf("ERROR");
+}
+
+void func_call() {
+    if (currToken == 10) {
+        getToken();
+        if (currToken == 58) {
+            getToken();
+            input();
+            getToken();
+            if (currToken == 59) {
+                printf("SUCCESS");
+            } else printf("ERROR");
+        }
+    }
+}
+
+void input() {
+    // exp(); 
+    func_call();
+    getToken();
+    if (currToken == 64) {
+        input();
+    } else return;
 }
