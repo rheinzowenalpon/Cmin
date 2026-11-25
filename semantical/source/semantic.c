@@ -27,6 +27,7 @@ void main() {
         }
         do {
             outers();
+            printf("%d\n", currToken);
         } while (currToken != -1);
         return;
     }
@@ -157,8 +158,11 @@ void value() {
 
 void outers() {
     getToken();
-    if (currToken == -4) outers();
-    if (currToken == -1) return;
+    if (currToken == 4) { 
+        outers();
+        return;
+    } else if (currToken == -1) 
+        return;
     else if (currToken == 30) {
         getToken();
         include();
