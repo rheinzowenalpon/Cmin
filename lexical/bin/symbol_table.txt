@@ -1,13 +1,29 @@
 Token Type     Lexeme         Token Value    
 
-IF             if             12             
-O_PAREN        (              58             
-INTER          $              70             
-IDENT          manuel         10             
-C_PAREN        )              59             
+INCLUDE        #include       30             
+IDENT          stdio          10             
+DOT            .              2              
+IDENT          cmin           10             
+NEWLINE        \n             4              
+NEWLINE        \n             4              
+STRUCT         struct         25             
+IDENT          person         10             
 O_SQRL         {              62             
 NEWLINE        \n             4              
-IDENT          torta          10             
+STRING         string         23             
+IDENT          firstName      10             
+NEWLINE        \n             4              
+STRING         string         23             
+IDENT          middleName     10             
+NEWLINE        \n             4              
+STRING         string         23             
+IDENT          lastName       10             
+NEWLINE        \n             4              
+INT            int            21             
+IDENT          age            10             
+NEWLINE        \n             4              
+INT            int            21             
+IDENT          id             10             
 NEWLINE        \n             4              
 C_SQRL         }              63             
 EOF_           EOF            -1             

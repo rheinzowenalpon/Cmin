@@ -74,7 +74,7 @@
 #define C_COMME  69
 #define INTER    70
 #define ESCCHAR  71
-#define CHARLIT  72 //For literal characters
+#define CHAR_    72 //For character keyword
 #define NEGATE   73
 
 #define UNKNOWN  99
@@ -154,6 +154,7 @@ const char* symTab(int nextToken) {
         case 70: return "INTER";
         case 71: return "ESCCHAR";
         case 72: return "CHARLIT";
+        case 73: return "NEGATE";
 
         case 99: return "UNKNOWN";
         case -1: return "EOF_";

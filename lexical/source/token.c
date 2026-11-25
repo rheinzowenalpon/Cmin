@@ -29,7 +29,7 @@ int keyword() {
             lexeme[2] == 'a' &&
             lexeme[3] == 'r' &&
             !lexeme[4])
-            return CHARLIT;
+            return CHAR_;
         else if (lexeme[1] == 'o' &&
             lexeme[2] == 'n') {
             if (lexeme[3] == 't' &&

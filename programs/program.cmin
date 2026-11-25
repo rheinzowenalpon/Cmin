@@ -1,3 +1,9 @@
-if ($manuel) {
-    torta
+#include stdio.cmin
+
+struct person {
+    string firstName
+    string middleName
+    string lastName
+    int age
+    int id
 }

@@ -1,5 +1,17 @@
 #include "scan.c"
 
+//Reference functions
+void outers();
+void data_type();
+void func_decl();
+void function();
+void struct_();
+void struct_block();
+void declaration_parameter();
+void declaration();
+void include();
+void value();
+
 void main() {
     symbolTableSearch();
     if ((fptr = fopen(fileName, "r")) == NULL) {
@@ -14,8 +26,7 @@ void main() {
             return;
         }
         do {
-            getToken();
-            printf("%d\n", currToken);
+            outers();
         } while (currToken != -1);
         return;
     }
@@ -43,7 +54,7 @@ void getToken() {
     Value = exp|constant|bool|string|char|ident|null|arr
             N/A|19      |26  |N/A   |72  |10   |24  |N/A
     ""
-*/
+
 void string() {
     getToken();
     if (currToken == 10) {
@@ -79,10 +90,52 @@ void array() {
     }
 }
 
-void value() {
 
-    if (currToken == 19) {
-        printf("SUCESS");
+
+void expression() {
+
+}
+
+void data_type();
+void modifier();
+*/
+
+//FUNCTION
+
+/*
+
+void main_() {
+    getToken();
+    if ((currToken > 20 && currToken < 27 && 
+        currToken != 24) || currToken == 72) {
+        getToken();
+        data_type();
+        if (currToken == 31) {
+            getToken();
+            if (currToken == 58) {
+                getToken();
+                if (currToken == 59) {
+                    getToken();
+                    if (currToken == 62) {
+                        getToken();
+                        if (currToken == 4) {
+                            getToken();
+                            return; //BLOCK
+                        } else printf("ERROR1");
+                    }
+                } else printf("ERROR1");
+            } else printf("ERROR2");
+        } else printf("ERROR3");
+    } else printf("ERROR4");
+}
+*/
+
+void value() {
+    if (currToken == 11) {
+        getToken();
+        if (currToken == 4 || currToken == -1) {
+            printf("SUCESS");
+        } else printf("ERROR");
     } else if (currToken == 26) {
         printf("SUCESS");
     } else if (currToken == 72) {
@@ -92,20 +145,163 @@ void value() {
     } else if (currToken == 24) {
         printf("SUCESS");         
     } else if (currToken == 66) {
-        string();
+        //string();
     } else if (currToken == 62) {
-        array();
+        //array();
     } else {
-        expression();
+        printf("ERROR");
+        //expression();
     }
 
 }
 
-//Alpon.number
+void outers() {
+    getToken();
+    if (currToken == -4) outers();
+    if (currToken == -1) return;
+    else if (currToken == 30) {
+        getToken();
+        include();
+    } else if (currToken == 25) {
+        getToken();
+        struct_block();
+    } else if (currToken == 19) {
+        getToken();
+        declaration();
+    } else if (currToken == 20) {
+        getToken();
+        if (currToken == 19) {
+            getToken();
+            declaration();
+        } else declaration();
+    } else if (currToken == 10) {
+        function();
+    } else func_decl();
+}
 
-//Not Allowed:
-//CONST GLOBAL
-//Allowed:
-//GLOBAL
-//CONST
-//GLOBAL CONST
+void func_decl() {
+    if ((currToken > 20 && currToken < 27) && 
+        currToken != 24 || currToken == 72) {
+        getToken();
+        data_type();
+        if (currToken == 10) {
+            getToken();
+            if (currToken == 58) {
+                getToken();
+                function();
+            } else if (currToken == 45) {
+                getToken();
+                value();
+            } else if (currToken == 4)
+                printf("SUCCESS");
+            else printf("ERROR");
+        } else printf("ERROR");
+    } else printf("ERROR");
+}
+
+void function() {
+    if (((currToken > 20 && currToken < 27) && 
+        currToken != 24) || currToken == 72) {
+        getToken();
+        declaration_parameter();
+    }
+    if (currToken == 59) {
+        getToken();
+        if (currToken == 62) {
+            getToken();
+            if (currToken == 4) {
+                printf("SUCCESS"); //Will be removed later
+                return;
+            } else printf("ERROR");
+        }
+    }
+}
+
+void struct_() {
+    if (currToken == 63) {
+        printf("SUCCESS");
+    } else if (((currToken > 20 && currToken < 27) &&
+        currToken != 24) || currToken == 72) {
+        getToken();
+        data_type();
+        if (currToken == 10) {
+            getToken();
+            if (currToken == 4) {
+                getToken();
+                struct_();
+            } else printf("ERROR");
+        } else printf("ERROR");
+    } else printf("ERROR");
+}
+
+void struct_block() {
+    if (currToken == 10) {
+        getToken();
+        if (currToken == 62) {
+            getToken();
+            if (currToken == 4) {
+                getToken();
+                struct_();
+            } else printf("ERROR");
+        } else printf("ERROR");
+    } else printf("ERROR");
+}
+
+void declaration_parameter() {
+    data_type();
+    if (currToken == 10) {
+        getToken();
+        if (currToken == 64) {
+            getToken();
+            if (((currToken > 20 && currToken < 27) && 
+                currToken != 24) || currToken == 72) {
+                getToken();
+                declaration_parameter();
+            } else printf("ERROR");
+            declaration_parameter();
+        } else return;
+    } else printf("ERROR");
+}
+
+void declaration() {
+    if ((currToken > 20 && currToken < 27) && 
+        currToken != 24 || currToken == 72) {
+        getToken();
+        data_type();
+        if (currToken == 10) {
+            getToken();
+            if (currToken == 45)
+                printf("SUCCESS\n"); //should be value
+            else if (currToken == 4)
+                printf("SUCCESS\n");
+            else printf("ERROR\n");
+        } else printf("ERROR\n");
+    } else printf("ERROR\n");
+}
+
+void data_type() {
+    if (currToken == 60) {
+        getToken();
+        if (currToken == 61) {
+            getToken();
+            data_type();
+        } else printf("ERROR");
+    } else printf("SUCCESS");
+}
+
+//INCLUDE
+
+void include() {
+    if (currToken == 10) {
+        getToken();
+        if (currToken == 2) {
+            getToken();
+            if (currToken == 10) {
+                getToken();
+                if (currToken == 4 || currToken == -1)
+                    printf("SUCCESS");
+                else printf("ERROR");
+            } else printf("ERROR");
+        } else printf("ERROR");
+    } else printf("ERROR");
+}
