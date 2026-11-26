@@ -328,12 +328,17 @@ void func_call() {
         if (currToken == 58) {
             getToken();
             input();
-            getToken();
             if (currToken == 59) {
                 printf("SUCCESS");
-            } else printf("ERROR");
+            } else {
+                printf("ERROR, invalid syntax: missing parenthesis\n");
+                getToken();
+                panic(59);
+            }
+        } else {
+            printf("ERROR");
         }
-    }
+    } else printf("ERROR");
 }
 
 void input() {
@@ -342,5 +347,12 @@ void input() {
     getToken();
     if (currToken == 64) {
         input();
+    } else return;
+}
+
+void panic(char syncToken) {
+    if((syncToken != currToken) && (currToken != -1)){
+        getToken();
+        panic(syncToken);
     } else return;
 }
