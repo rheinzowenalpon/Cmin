@@ -33,6 +33,13 @@ void main() {
     }
 }
 
+void panic(char syncToken) {
+    if((syncToken != currToken) && (currToken != -1)){
+        getToken();
+        panic(syncToken);
+    } else return;
+}
+
 void getToken() {
     currToken = 0;
     if (isFirstToken) {
@@ -162,7 +169,9 @@ void value() {
     } else if (currToken == 62) {
         //array();
     } else {
-        printf("ERROR");
+        printf("ERROR: Invalid value\n");
+        getToken();
+
         //expression();
     }
 
@@ -245,9 +254,21 @@ void struct_() {
             if (currToken == 4) {
                 getToken();
                 struct_();
-            } else printf("ERROR");
-        } else printf("ERROR");
-    } else printf("ERROR");
+            } else {
+                printf("ERROR: No closing bracket found for struct\n");
+                getToken();
+                panic(4);
+            }
+        } else {
+            printf("ERROR: Undefined struct member\n");
+            getToken();
+            panic(10);
+        }
+    } else {
+        printf("ERROR: No closing bracket found for struct\n"); 
+        getToken();
+        panic(63);
+    }
 }
 
 void struct_block() {
@@ -258,9 +279,21 @@ void struct_block() {
             if (currToken == 4) {
                 getToken();
                 struct_();
-            } else printf("ERROR");
-        } else printf("ERROR");
-    } else printf("ERROR");
+            } else {
+                printf("ERROR: No closing bracket found for struct\n");
+                getToken();
+                panic(4);
+            }
+        } else {
+            printf("ERROR: No opening bracket found for stuct\n");
+            getToken();
+            panic(62);
+        }
+    } else {
+        printf("ERROR: No Indentifier for struct\n");
+        getToken();
+        panic(10);
+    }
 }
 
 void declaration_parameter() {
@@ -273,10 +306,18 @@ void declaration_parameter() {
                 currToken != 24) || currToken == 72) {
                 getToken();
                 declaration_parameter();
-            } else printf("ERROR");
+            } else {
+                printf("ERROR: No data type for parameter\n");
+                getToken();
+                panic(64);
+            }
             declaration_parameter();
         } else return;
-    } else printf("ERROR");
+    } else {
+        printf("ERROR: No identifier for parameter\n");
+        getToken();
+        panic(10);
+    }
 }
 
 void declaration() {
@@ -290,9 +331,21 @@ void declaration() {
                 printf("SUCCESS\n"); //should be value
             else if (currToken == 4)
                 printf("SUCCESS\n");
-            else printf("ERROR\n");
-        } else printf("ERROR\n");
-    } else printf("ERROR\n");
+            else {
+                printf("ERROR: Invalid initializer for declaration\n");
+                getToken();
+                panic(4);           
+            }
+        } else {
+            printf("ERROR: No identifier for declaration\n");
+            getToken();
+            panic(10);
+        }
+    } else {
+        printf("ERROR: Invalid data type\n");
+        getToken();
+        panic(4);
+    }
 }
 
 void data_type() {
@@ -317,9 +370,21 @@ void include() {
                 if (currToken == 4 || currToken == -1)
                     printf("SUCCESS");
                 else printf("ERROR");
-            } else printf("ERROR");
-        } else printf("ERROR");
-    } else printf("ERROR");
+            } else {
+                printf("ERROR: Invalid include syntax\n"); //meron na pala sa include mlehhh
+                getToken();
+                panic(10);
+            }
+        } else {
+            printf("ERROR: No include directive found\n");
+            getToken();
+            panic(2);
+        }
+    } else {
+        printf("ERROR: No identifier for include\n");
+        getToken();
+        panic(10);
+    }
 }
 
 void func_call() {
@@ -350,9 +415,3 @@ void input() {
     } else return;
 }
 
-void panic(char syncToken) {
-    if((syncToken != currToken) && (currToken != -1)){
-        getToken();
-        panic(syncToken);
-    } else return;
-}
