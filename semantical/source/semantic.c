@@ -157,8 +157,27 @@ void return_(){
     }
 }
 
-//Alpon.number
+void interp(){
+    getToken();
+    if (currToken == 70){ //interp ($)
+        getToken();
+        if (currToken == 60){ // open bracket [
+            expression();
+            getToken();
+            if (currToken == 61){ // close bracket ]
+            } else {
+                printf("ERROR");
+            }
+        } else {
+            printf("ERROR");
+        } 
+    } else {
+        printf("ERROR");
+        }
+    }
 
+
+//Alpon.number
 //Not Allowed:
 //CONST GLOBAL
 //Allowed:
