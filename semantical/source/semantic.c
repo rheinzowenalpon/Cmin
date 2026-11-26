@@ -36,6 +36,13 @@ void main() {
     }
 }
 
+void panic(char syncToken) {
+    if((syncToken != currToken) && (currToken != -1)){
+        getToken();
+        panic(syncToken);
+    } else return;
+}
+
 void getToken() {
     currToken = 0;
     if (isFirstToken) {
