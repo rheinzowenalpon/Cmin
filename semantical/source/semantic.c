@@ -88,20 +88,6 @@ void postfix() {
     }
 }
 
-void array() {
-    getToken();
-    if (currToken == 62) {
-        array();
-    } else if (currToken == 32 || currToken == 33 || currToken == 39 || currToken == 73) { //comma
-        postfix();
-    } else if (currToken == 63) {
-        printf("SUCCESS");
-    } else {
-        printf("ERROR");
-    }
-}
-
-
 
 void expression() {
 
@@ -112,6 +98,28 @@ void modifier();
 */
 
 //FUNCTION
+
+void array() {
+    expression();
+    getToken();
+    if (currToken == 64) {
+        getToken();
+        array();
+    } else if (currToken == 63) {
+        getToken();
+        if (nextToken == 4 || nextToken == -1) {
+            printf("SUCCESS");
+        } else {
+            printf("ERROR: Newline is expected after '}'. \n");
+            getToken();
+            panic(4)
+        }
+    } else {
+        printf("ERROR: '}' is missing. \n");
+        getToken();
+        panic(63)
+    }
+}
 
 void program() {
     getToken();
