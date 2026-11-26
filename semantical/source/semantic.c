@@ -141,12 +141,32 @@ void main_() {
                         getToken();
                         if (currToken == 63)
                             printf("SUCCESS");
-                        else printf("ERROR");
-                    } else printf("ERROR1");
+                        else {
+                            printf("ERROR: '}' is expected to close main. \n");
+                            getToken();
+                            panic(63);
+                        }
+                    } else {
+                        printf("ERROR: Define new line before defining the body of main. \n");
+                        getToken();
+                        panic(4);
+                    }
                 }
-            } else printf("ERROR");
-        } else printf("ERROR");
-    } else printf("ERROR");
+            } else {
+                printf("ERROR: ')' is expected for main. \n");
+                getToken();
+                panic(59);
+            }
+        } else {
+            printf("ERROR: '(' is expected for main. \n");
+            getToken();
+            panic(58);
+        }
+    } else {
+        printf("ERROR: No Entry Point. \n");
+        getToken();
+        panic(31);
+    }
 }
 
 void block() {
@@ -165,11 +185,23 @@ void variable() {
                     variable();
                 } else if (currToken == 4 || currToken == -1) {
                     printf("SUCCESS");
-                } else printf("ERROR");
-            } else printf("ERROR");
+                } else {
+                    printf("ERROR: '.' is missing. \n");
+                    getToken();
+                    panic(2);
+                }
+            } else {
+                printf("ERROR: ')' is missing. \n");
+                getToken();
+                panic(61);
+            }
         } else if (currToken == 4 || currToken == -1) {
             printf("SUCCESS");
-        } else printf("ERRROR");
+        } else {
+            printf("ERROR: '(' is missing. \n");
+            getToken();
+            panic(60);
+        }
     } printf("SUCCESS");
 }
 
@@ -179,7 +211,11 @@ void expression() {
         lower_assignment();
         if (currToken == 59) {
             printf("SUCCESS");
-        } else printf("ERROR");
+        } else {
+            printf("ERROR: ')' is missing. \n");
+            getToken();
+            panic(59);
+        }
     } else lower_assignment();
 }
 
@@ -289,7 +325,11 @@ void postfix() {
         } else if (currToken == 58) {
             getToken();
             call();
-        } else printf("ERROR");
+        } else {
+            printf("ERROR: Missing identifier. \n");
+            getToken();
+            panic(10);
+        }
     } else factor();
 }
 
@@ -308,11 +348,27 @@ void loop() {
                     if (currToken == 4) {
                         getToken();
                         block();
-                    } else printf("ERROR");
-                } else printf("ERROR");
-            } else printf("ERROR");
-        } else printf("ERROR");
-    } else printf("ERROR");
+                    } else printf("ERROR: Define new line before defining the body of main. \n");
+                } else {
+                    printf("ERROR: '{' is missing. \n");
+                    getToken();
+                    panic(62);
+                }
+            } else {
+                printf("ERROR: ')' is missing. \n");
+                getToken();
+                panic(59);
+            }
+        } else {
+            printf("ERROR: '(' is missing. \n");
+            getToken();
+            panic(58);
+        }
+    } else {
+        printf("ERROR: Keyword 'while' is expected. \n");
+        getToken();
+        panic(14);
+    }
 }
 
 void value() {
