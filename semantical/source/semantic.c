@@ -62,6 +62,53 @@ void getToken() {
     }
 }
 
+void match(int expectedToken) {
+    if (currToken == expectedToken) {
+        getToken();
+    } else {
+        printf("SYNTAX ERROR: Expected token %s (%d), got %s (%d)\n",
+               symTab(expectedToken), expectedToken, symTab(currToken), currToken);
+        fptrErr = fopen("../bin/err.txt", "w");
+        fprintf(fptrErr, "SYNTAX ERROR: Expected %s, got %s\n",
+                symTab(expectedToken), symTab(currToken));
+        fclose(fptrErr);
+        exit(1);
+    }
+}
+
+int parseSpecial() {
+    switch (currToken) {
+        case ESCCHAR:
+            match(ESCCHAR);
+            return 1;
+        case NEWLINE:
+            match(NEWLINE);
+            return 1;
+        case TAB:
+            match(TAB);
+            return 1;
+        case S_QUOTE:
+            match(S_QUOTE);
+            return 1;
+        case D_QUOTE:
+            match(D_QUOTE);
+            return 1;
+        default:
+            printf("SYNTAX ERROR in Special: Unexpected token %s (%d)\n",
+                   symTab(currToken), currToken);
+            return 0;
+    }
+}
+
+void semantic() {
+    if (currToken == ESCCHAR || currToken == NEWLINE || currToken == TAB ||
+        currToken == S_QUOTE || currToken == D_QUOTE) {
+        parseSpecial();
+    } else if (currToken != EOF_) {
+        getToken();
+    }
+}
+
 /*
     Value = exp|constant|bool|string|char|ident|null|arr
             N/A|19      |26  |N/A   |72  |10   |24  |N/A
@@ -338,158 +385,14 @@ void value() {
         printf("ERROR");
         //expression();
     }
+
 }
 
-void outers() {
-    if (currToken == 4) {
-        getToken();
-        outers();
-        return;
-    } else if (currToken == -1)
-        return;
-    else if (currToken == 30) {
-        getToken();
-        include();
-    } else if (currToken == 25) {
-        getToken();
-        struct_block();
-    } else if (currToken == 19) {
-        getToken();
-        declaration();
-    } else if (currToken == 20) {
-        getToken();
-        if (currToken == 19) {
-            getToken();
-            declaration();
-        } else declaration();
-    } else if (currToken == 10) {
-        function();
-    } else func_decl();
-}
+//Alpon.number
 
-void func_decl() {
-    if ((currToken > 20 && currToken < 27) && 
-        currToken != 24 || currToken == 72) {
-        getToken();
-        data_type();
-        if (currToken == 10) {
-            getToken();
-            if (currToken == 58) {
-                getToken();
-                function();
-            } else if (currToken == 45) {
-                getToken();
-                value();
-            } else if (currToken == 4)
-                printf("SUCCESS");
-            else printf("ERROR");
-        } else printf("ERROR");
-    } else printf("ERROR");
-}
-
-void function() {
-    if (((currToken > 20 && currToken < 27) && 
-        currToken != 24) || currToken == 72) {
-        getToken();
-        declaration_parameter();
-    }
-    if (currToken == 59) {
-        getToken();
-        if (currToken == 62) {
-            getToken();
-            if (currToken == 4) {
-                printf("SUCCESS"); //Will be removed later
-                return;
-            } else printf("ERROR");
-        }
-    }
-}
-
-void struct_() {
-    if (currToken == 63) {
-        printf("SUCCESS");
-    } else if (((currToken > 20 && currToken < 27) &&
-        currToken != 24) || currToken == 72) {
-        getToken();
-        data_type();
-        if (currToken == 10) {
-            getToken();
-            if (currToken == 4) {
-                getToken();
-                struct_();
-            } else printf("ERROR");
-        } else printf("ERROR");
-    } else printf("ERROR");
-}
-
-void struct_block() {
-    if (currToken == 10) {
-        getToken();
-        if (currToken == 62) {
-            getToken();
-            if (currToken == 4) {
-                getToken();
-                struct_();
-            } else printf("ERROR");
-        } else printf("ERROR");
-    } else printf("ERROR");
-}
-
-void declaration_parameter() {
-    data_type();
-    if (currToken == 10) {
-        getToken();
-        if (currToken == 64) {
-            getToken();
-            if (((currToken > 20 && currToken < 27) && 
-                currToken != 24) || currToken == 72) {
-                getToken();
-                declaration_parameter();
-            } else printf("ERROR");
-            declaration_parameter();
-        } else return;
-    } else printf("ERROR");
-}
-
-void declaration() {
-    if ((currToken > 20 && currToken < 27) && 
-        currToken != 24 || currToken == 72) {
-        getToken();
-        data_type();
-        if (currToken == 10) {
-            getToken();
-            if (currToken == 45)
-                printf("SUCCESS\n"); //should be value
-            else if (currToken == 4)
-                printf("SUCCESS\n");
-            else printf("ERROR\n");
-        } else printf("ERROR\n");
-    } else printf("ERROR\n");
-}
-
-void data_type() {
-    if (currToken == 60) {
-        getToken();
-        if (currToken == 61) {
-            getToken();
-            data_type();
-        } else printf("ERROR");
-    } else printf("SUCCESS");
-}
-
-//INCLUDE
-
-void include() {
-    if (currToken == 10) {
-        getToken();
-        if (currToken == 2) {
-            getToken();
-            if (currToken == 10) {
-                getToken();
-                if (currToken == 4 || currToken == -1)
-                    printf("SUCCESS");
-                else printf("ERROR");
-            } else printf("ERROR");
-        } else printf("ERROR");
-    } else printf("ERROR");
-}
+//Not Allowed:
+//CONST GLOBAL
+//Allowed:
+//GLOBAL
+//CONST
+//GLOBAL CONST
