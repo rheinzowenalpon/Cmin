@@ -11,6 +11,10 @@ void declaration_parameter();
 void declaration();
 void include();
 void value();
+void program();
+void main_();
+void block();
+void loop();
 
 void main() {
     symbolTableSearch();
@@ -26,8 +30,7 @@ void main() {
             return;
         }
         do {
-            outers();
-            printf("%d\n", currToken);
+            program();
         } while (currToken != -1);
         return;
     }
@@ -103,33 +106,207 @@ void modifier();
 
 //FUNCTION
 
-/*
-
-void main_() {
+void program() {
     getToken();
     if ((currToken > 20 && currToken < 27 && 
         currToken != 24) || currToken == 72) {
         getToken();
-        data_type();
-        if (currToken == 31) {
-            getToken();
-            if (currToken == 58) {
-                getToken();
-                if (currToken == 59) {
-                    getToken();
-                    if (currToken == 62) {
-                        getToken();
-                        if (currToken == 4) {
-                            getToken();
-                            return; //BLOCK
-                        } else printf("ERROR1");
-                    }
-                } else printf("ERROR1");
-            } else printf("ERROR2");
-        } else printf("ERROR3");
-    } else printf("ERROR4");
+        main_();
+    } else {
+        outers();
+    }
 }
-*/
+
+void main_() {
+    getToken();
+    data_type();
+    if (currToken == 31) {
+        getToken();
+        if (currToken == 58) {
+            getToken();
+            if (currToken == 59) {
+                getToken();
+                if (currToken == 62) {
+                    getToken();
+                    if (currToken == 4) {
+                        getToken();
+                        block();
+                        getToken();
+                        if (currToken == 63)
+                            printf("SUCCESS");
+                        else printf("ERROR");
+                    } else printf("ERROR1");
+                }
+            } else printf("ERROR");
+        } else printf("ERROR");
+    } else printf("ERROR");
+}
+
+void block() {
+    
+}
+
+void variable() {
+    if (currToken == 10) {
+        getToken();
+        if (getToken == 60) {
+            expression();
+            if (getToken == 61) {
+                getToken();
+                if (getToken == 2) {
+                    getToken();
+                    variable();
+                } else if (currToken == 4 || currToken == -1) {
+                    printf("SUCCESS");
+                } else printf("ERROR");
+            } else printf("ERROR");
+        } else if (currToken == 4 || currToken == -1) {
+            printf("SUCCESS");
+        } else printf("ERRROR");
+    } printf("SUCCESS");
+}
+
+void expression() {
+    if (currToken == 58) {
+        getToken();
+        lower_assignment();
+        if (currToken == 59) {
+            printf("SUCCESS");
+        } else printf("ERROR");
+    } else lower_assignment();
+}
+
+void lower_assignment() {
+    if (currToken == 10) {
+        getToken();
+        if (currToken > 45 && currToken < 50) {
+            getToken();
+        } else logical_or();
+    } else logical_or();
+}
+
+void logical_or() {
+    logical_or();
+    if (currToken == 56) {
+        getToken();
+        logical_and();
+    } else logical_and();
+}
+
+void logical_and() {
+    logical_and();
+    if (currToken == 55) {
+        getToken();
+        binary_or();
+    } else binary_or();
+}
+
+void binary_or() {
+    binary_or();
+    if (currToken == 41) {
+        getToken();
+        binary_xor();
+    } else binary_xor();
+}
+
+void binary_xor() {
+    binary_xor();
+    if (currToken == 42) {
+        getToken();
+        binary_and();
+    } else binary_and();
+}
+
+void binary_and() {
+    binary_and();
+    if (currToken == 40) {
+        getToken();
+        equaltiy_comparison();
+    } else equaltiy_comparison();
+}
+
+void symmetric_equality_comparison() {
+    symmetric_equality_comparison();
+    if (currToken == 54 || currToken == 57) {
+        getToken();
+        assymmetric_equality_comparison();
+    } else symmetric_equality_comparison();
+}
+
+void assymmetric_equality_comparison() {
+    assymmetric_equality_comparison();
+    if (currToken > 49 && currToken < 54) {
+        getToken();
+        binary_bitwise();
+    } else binary_bitwise();
+}
+
+void binary_bitwise() {
+    binary_bitwise();
+    if (currToken == 43 || currToken == 44) {
+        getToken();
+        upper_arithmetic();
+    } else upper_arithmetic();
+}
+
+void upper_arithmetic() {
+    upper_arithmetic();
+    if (currToken == 32 || currToken == 33) {
+        getToken();
+        lower_arithmetic();
+    } else lower_arithmetic();
+}
+
+void lower_arithmetic() {
+    lower_arithmetic();
+    if (currToken > 33 && currToken < 37) {
+        getToken();
+        prefix();
+    } else prefix();
+}
+
+void prefix() {
+    if (currToken == 73 || currToken < 39) {
+        getToken();
+        logical_or();
+    } else if (currToken == 37 || currToken == 38) {
+        getToken();
+        variable();
+    } else postfix();
+}
+
+void postfix() {
+    if (currToken == 10) {
+        if (currToken == 37 || currToken == 38) {
+            printf("SUCCESS");
+        } else if (currToken == 58) {
+            getToken();
+            call();
+        } else printf("ERROR");
+    } else factor();
+}
+
+
+
+void loop() {
+    if (currToken == 14) {
+        getToken();
+        if (currToken == 58) {
+            getToken();
+            expression();
+            if (currToken == 59) {
+                getToken();
+                if (currToken == 62) {
+                    getToken();
+                    if (currToken == 4) {
+                        getToken();
+                        block();
+                    } else printf("ERROR");
+                } else printf("ERROR");
+            } else printf("ERROR");
+        } else printf("ERROR");
+    } else printf("ERROR");
+}
 
 void value() {
     if (currToken == 11) {
@@ -153,15 +330,14 @@ void value() {
         printf("ERROR");
         //expression();
     }
-
 }
 
 void outers() {
-    getToken();
-    if (currToken == 4) { 
+    if (currToken == 4) {
+        getToken();
         outers();
         return;
-    } else if (currToken == -1) 
+    } else if (currToken == -1)
         return;
     else if (currToken == 30) {
         getToken();
