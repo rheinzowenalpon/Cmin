@@ -15,6 +15,7 @@ void program();
 void main_();
 void block();
 void loop();
+void panic();
 
 void main() {
     symbolTableSearch();
@@ -34,6 +35,13 @@ void main() {
         } while (currToken != -1);
         return;
     }
+}
+
+void panic(char syncToken) {
+    if((syncToken != currToken) && (currToken != -1)){
+        getToken();
+        panic(syncToken);
+    } else return;
 }
 
 void getToken() {
