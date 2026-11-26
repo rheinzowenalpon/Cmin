@@ -153,7 +153,7 @@ const char* symTab(int nextToken) {
         case 69: return "C_COMME";
         case 70: return "INTER";
         case 71: return "ESCCHAR";
-        case 72: return "CHARLIT";
+        case 72: return "CHAR_";
         case 73: return "NEGATE";
 
         case 99: return "UNKNOWN";
