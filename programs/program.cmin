@@ -7,3 +7,18 @@ struct person {
     int age
     int id
 }
+
+int main() {
+    int a = 5
+    int b = 6
+    c = (a + b )*b
+    if (c > 1 ) {
+
+    } else if (c < 1 ) {
+
+    } else {
+        while (true) {
+            break
+        }
+    }
+}
