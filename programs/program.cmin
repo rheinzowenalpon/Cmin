@@ -11,8 +11,8 @@ struct person {
 int main() {
     int a = 5
     int b = 6
-    c = (a + b )*b
-    if (c > 1 ) {
+    c = (a + b)*b
+    if (c > 1) {
 
     } else if (c < 1 ) {
 

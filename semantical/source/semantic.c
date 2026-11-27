@@ -29,6 +29,11 @@ int main(void) {
         fclose(fptr);
         return 1;
     }
+    if ((fptrErr2 = fopen("../bin/err.txt", "r")) != NULL) {
+        printf("error - unknown token found\n");
+        fclose(fptrErr2);
+        return 1;
+    }
     getToken();      /* load the first lookahead token */
     program();
     fclose(fptr);

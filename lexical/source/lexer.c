@@ -234,7 +234,14 @@ int analyzer(void) {
         }
         }
     }
- 
+    if (nextToken == 99) {
+        fptrErr2 = fopen("../../semantical/bin/err.txt", "w");
+        if (fptrErr2) {
+            fprintf(fptrErr2, "error - unknown token found\n");
+            fclose(fptrErr2);
+        }
+        fclose(fptrErr2);
+    }
     printf("Next token is : %d, next lexeme is %s\n", nextToken, lexeme);
     /* widths are fixed: the parser reads this file by byte offset.
        .14 keeps an over-long lexeme from shifting the token-value column. */

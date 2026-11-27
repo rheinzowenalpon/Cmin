@@ -175,3 +175,4 @@ bool debugVal = 1;
 FILE *fptr;
 FILE *fptr2;
 FILE *fptrErr;
+FILE *fptrErr2;
