@@ -74,7 +74,7 @@
 #define C_COMME  69
 #define INTER    70
 #define ESCCHAR  71
-#define CHAR_    72 //For character keyword
+#define CHAR_    72
 #define NEGATE   73
 
 #define UNKNOWN  99

@@ -17,14 +17,3 @@ void symbolTableSearch(){
         }
     }
 }
-
-
-/*
-identifier = 123;
-if(marcos)
-
-return;
-break;
-
-*/
-    
