@@ -72,13 +72,9 @@ void block() {
             panic(4);
         }
     }
-    if (currToken == 63) {
-        return;
-        } else {
-            printf("syntax error: no closing bracket found for block (line %d)\n", currentLine); 
-            getToken();
-            panic(63);
-    } //else statement();
+    if (currToken != 63) {
+        block();
+    } else return;
 }
 //STATEMENT
 void statement() {
@@ -220,6 +216,13 @@ void loop() {
                 if (currToken == 4) {
                     getToken();
                     block();
+                    if (currToken == 63) {
+                        return;
+                    } else {
+                        printf("syntax error: expected a '}' to enclose a body (line %d)\n", currentLine);
+                        getToken();
+                        panic(4);
+                    }
                 } else {
                     printf("syntax error: define new line before defining the body of while (line %d)\n", currentLine);
                     getToken();
