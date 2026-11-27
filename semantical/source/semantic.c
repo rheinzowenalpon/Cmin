@@ -4,10 +4,9 @@
  
 static long tokenCount = 0;
 static int  foundMain  = 0;
- 
+
 /* ---------- prototypes ---------- */
 void getToken(void);
-void panic(int syncToken);
 static int  expect(int tok, const char *msg);
 static void terminator(void);
 static int  open_body(const char *what);
@@ -64,7 +63,7 @@ void getToken(void) {
 }
  
 /* Skip ahead to the sync token, a newline, or end of input (does not consume it). */
-void panic(int syncToken) {
+void panic(char syncToken) {
     while (currToken != syncToken && currToken != 4 && currToken != -1)
         getToken();
 }
