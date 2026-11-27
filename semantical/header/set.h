@@ -39,6 +39,7 @@ void expression();
 void lower_assignment();
 void symmetric_equality_comparison();
 void declaration_parameter();
+void block_contents();
 void logical_or();
 void logical_and();
 void binary_or();

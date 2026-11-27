@@ -38,6 +38,7 @@ void getToken() {
             currToken += (temp[1]) - '0';
         }
     }
+    printf("Finished reading token %d\n", currToken);
     if (currToken == 4) currentLine++;
 }
 
@@ -60,12 +61,23 @@ void program() {
     }
 }
 //BLOCK
+
 void block() {
+    block();
+    if (currToken == 63)
+        printf("Finished reading token %d\n", currToken);
+    else {
+        printf("syntax error: '}' is expected to close main (line %d)\n", currentLine);
+        getToken();
+        panic(63);
+    }
+}
+void block_contents() {
     statement();
     if (currToken == 15 || currToken == 29 || currToken == 16) {
         getToken();
         if (currToken == 4) {
-                return;
+            return;
         } else {
             printf("syntax error: invalid line terminator (line %d)\n", currentLine);
             getToken();
@@ -73,7 +85,8 @@ void block() {
         }
     }
     if (currToken != 63) {
-        block();
+        getToken();
+        block_contents();
     } else return;
 }
 //STATEMENT
@@ -216,13 +229,6 @@ void loop() {
                 if (currToken == 4) {
                     getToken();
                     block();
-                    if (currToken == 63) {
-                        return;
-                    } else {
-                        printf("syntax error: expected a '}' to enclose a body (line %d)\n", currentLine);
-                        getToken();
-                        panic(4);
-                    }
                 } else {
                     printf("syntax error: define new line before defining the body of while (line %d)\n", currentLine);
                     getToken();
@@ -345,13 +351,6 @@ void main_() {
                     if (currToken == 4) {
                         getToken();
                         block();
-                        if (currToken == 63)
-                            return;
-                        else {
-                            printf("syntax error: '}' is expected to close main (line %d)\n", currentLine);
-                            getToken();
-                            panic(63);
-                        }
                     } else {
                         printf("syntax error: must enter a newline after '{' before defining the function body (line %d)\n", currentLine);
                         getToken();
@@ -460,6 +459,7 @@ void function() {
         if (currToken == 62) {
             getToken();
             if (currToken == 4) {
+                getToken();
                 block();
                 return;
             } else {
