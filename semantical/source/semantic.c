@@ -128,7 +128,31 @@ void line() {
             getToken();
             panic(4);
         }
-    }
+    } 
+}
+//VARIABLE
+void variable() {
+    if (currToken == 60) {
+        getToken();
+        expression();
+        if (currToken == 61) {
+            getToken();
+            if (currToken == 2) {
+                getToken();
+                variable();
+            } else return;
+        } else {
+            printf("syntax error: indexing must close with a ']' (line %d)\n", currentLine);
+            getToken();
+            panic(61);
+        }
+    } else if (currToken == 2) {
+        getToken();
+        variable();
+    } else if (currToken == 70) {
+        getToken();
+        interpolation();
+    } else return;
 }
 //FACTOR
 void factor() {
@@ -168,9 +192,6 @@ void factor() {
     } else if (currToken == 62) {
         getToken();
         array();
-    } else if (currToken == 70) {
-        getToken();
-        interpolation();
     } else {
         getToken();
         expression();
@@ -408,6 +429,22 @@ void data_type() {
         }
     } else return;
 }
+//DECLARATION PARAMETER
+void declaration_parameter() {
+    data_type();
+    if (currToken == 10) {
+        getToken();
+        if (currToken == 64) {
+            getToken();
+            if (((currToken > 20 && currToken < 27) && 
+                currToken != 24) || currToken == 72) {
+                getToken();
+                declaration_parameter();
+            } else printf("ERROR");
+            declaration_parameter();
+        } else return;
+    } else printf("ERROR");
+}
 //FUNCTION
 void function() {
     if (((currToken > 20 && currToken < 27) && 
@@ -603,10 +640,6 @@ void include() {
         panic(10);
     }
 }
-//LINE
-void line() {
-
-}
 //EXPRESSION
 void expression() {
     if (currToken == 58) {
@@ -662,8 +695,8 @@ void binary_and() {
     binary_and();
     if (currToken == 40) {
         getToken();
-        equaltiy_comparison();
-    } else equaltiy_comparison();
+        symmetric_equality_comparison();
+    } else symmetric_equality_comparison();
 }
 void symmetric_equality_comparison() {
     symmetric_equality_comparison();
@@ -715,11 +748,39 @@ void postfix() {
             return;
         } else if (currToken == 58) {
             getToken();
-            call();
+            func_call();
         } else {
             printf("syntax error: missing identifier\n", currentLine);
             getToken();
             panic(10);
         }
     } else factor();
+}
+void func_call() {
+    if (currToken == 10) {
+        getToken();
+        if (currToken == 58) {
+            getToken();
+            input();
+            if (currToken == 59) {
+                
+            } else {
+                printf("syntax error: missing closing parenthesis (line %d)\n", currentLine);
+                getToken();
+                panic(59);
+            }
+        } else variable();
+    } else {
+        printf("syntax error: invalid syntax (line %d)\n", currentLine);
+        getToken();
+        panic(59);
+    }
+}
+void input() {
+    func_call();
+    getToken();
+    if (currToken == 64) {
+        getToken();
+        input();
+    } else return;
 }
